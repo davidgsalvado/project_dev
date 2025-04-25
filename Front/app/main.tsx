@@ -4,12 +4,19 @@ import { useEffect, useState } from 'react';
 
 export default function MainPage() {
     const [mailValue, setMailValue] = useState<string>() // initial mail value is an empty string
+    const [passwordValue, setPasswordValue] = useState<string>()
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true) // initially the button should be disabled
     const [submitted, setSubmitted] = useState<boolean>(false)
 
     const onChangeMail = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setMailValue(event.target)
+        setMailValue(event.target.value)
     }
+    const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPasswordValue(event.target.value)
+    }
+
+    const re = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+
     useEffect(() => {
         if (mailValue != "") {
             setIsButtonDisabled(true)
@@ -32,7 +39,14 @@ export default function MainPage() {
                 onChange={onChangeMail}
                 helperText="email"
             />
+            <TextField
+                style={{ height: '30px', width: '300px', marginBottom: '50px' }}
+                helperText="password"
+                type="password"
+                onChange={onChangePassword}
+            />
             <Button
+                disabled={passwordValue === "" || !re.test(String(mailValue)?.toLowerCase())}
                 variant='contained'
                 color="primary"
                 style={{ color: isButtonDisabled ? 'black' : 'white', 
