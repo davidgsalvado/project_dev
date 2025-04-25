@@ -1,1 +1,1 @@
-Another file named C
+File C
